@@ -1,6 +1,21 @@
 package com.croy.beans;
 
-public class Ad {
+import java.io.Serializable;
+
+public class Ad implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int add_id;
+	private int user_id;
+	private int category_id;
+	private int sub_category_id;
+	private String title;
+	private String price;
+	private String description;
+	private String post_date;
+
 	public int getAdd_id() {
 		return add_id;
 	}
@@ -57,20 +72,16 @@ public class Ad {
 		this.description = description;
 	}
 
-	public String getImage() {
-		return image;
+	public String getPost_date() {
+		return post_date;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setPost_date(String post_date) {
+		this.post_date = post_date;
 	}
 
-	private int add_id;
-	private int user_id;
-	private int category_id;
-	private int sub_category_id;
-	private String title;
-	private String price;
-	private String description;
-	private String image;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

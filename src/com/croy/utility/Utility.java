@@ -1,5 +1,7 @@
 package com.croy.utility;
 
+import javax.servlet.http.HttpSession;
+
 public class Utility {
 	public static String display_errors(String msg) {
 		String error = "<div class=\"alert alert-danger\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span><span class=\"sr-only\">Error:</span>";
@@ -11,5 +13,13 @@ public class Utility {
 		String success = "<div class=\"alert alert-success\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span><span class=\"sr-only\">Error:</span>";
 		success = success + " " + msg + "</div>";
 		return success;
+	}
+
+	public static boolean isLoggedIn(HttpSession httpSession) {
+		if (httpSession.getAttribute("email") != null) {
+			return true;
+		}
+		return false;
+
 	}
 }
