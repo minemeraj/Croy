@@ -1,15 +1,15 @@
 package com.croy.beans;
 
-public class Categoty {
-	private int categoryId;
+public class Category {
+	private int category_Id;
 	private String category;
 
-	public int getCategoryId() {
-		return categoryId;
+	public int getCategory_Id() {
+		return category_Id;
 	}
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory_Id(int categoryId) {
+		this.category_Id = categoryId;
 	}
 
 	public String getCategory() {

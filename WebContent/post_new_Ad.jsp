@@ -1,3 +1,8 @@
+<%@page import="com.croy.tables.SubCategoryManager"%>
+<%@page import="com.croy.beans.SubCategory"%>
+<%@page import="com.croy.beans.Category"%>
+<%@page import="com.croy.tables.CategoryManager"%>
+<%@page import="java.util.ArrayList"%>
 <jsp:include page="includes/header.jsp"></jsp:include>
 
 <div class="col-md-7 col-md-offset-3">
@@ -6,21 +11,51 @@
 		<div class="panel-body">
 
 			<div class="col-lg-6">
-				<form method="post" role="form">
+				<form method="post" role="form" autocomplete="on"
+					data-toggle="validator">
 					<fieldset>
 						<div class="form-group">
-							<label>Selects</label> 
-							<select class="form-control">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
+							<label>Select Your Ad Category</label> <select
+								name="sub_category" class="selectpicker form-control"
+								data-live-search="true" required
+								data-error="Must select your Ad Category" id="inputSubCategory">
+								<option disabled selected value="">--Please Select
+									Area--</option>
+								<%
+									ArrayList<Category> categories = CategoryManager.getAllCategory();
+									for (Category category : categories) {
+										out.print("<optgroup label=\"");
+										out.print(category.getCategory());
+										out.print("\">");
+										ArrayList<SubCategory> subCategories = SubCategoryManager
+												.getSubCategoryByCategoryId(category.getCategory_Id());
+										for (SubCategory subCategory : subCategories) {
+											out.print("<option ");
+											out.print(" value=\"");
+											out.print(subCategory.getSub_Category_id());
+											out.print("\">");
+											out.print(subCategory.getSub_Category());
+											out.print("</option>");
+										}
+										out.print("</optgroup>");
+									}
+								%>
+
 							</select>
 						</div>
 						<div class="form-group">
-							<label>Text Input</label> <input class="form-control">
-							<p class="help-block">Example block-level help text here.</p>
+							<label>Ad Title</label> <input class="form-control"
+								placeholder="Ad Title" name="password" type="text" required
+								maxlength="14" id="inputPassword"
+								data-error="This fiels is required!">
+							<div class="help-block with-errors">The ad title cannot
+								more than 14 character long!</div>
+						</div>
+
+						<div class="form-group">
+							<label>Ad Title</label> <input class="form-control" name="title"
+								required data-error="This fiels is required!">
+							<div class="help-block"></div>
 						</div>
 						<div class="form-group">
 							<label>Text Input with Placeholder</label> <input

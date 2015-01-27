@@ -1,9 +1,12 @@
 package net.croy.test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.croy.beans.Ad;
+import com.croy.beans.Category;
 import com.croy.tables.AdManager;
+import com.croy.tables.CategoryManager;
 
 public class Main {
 
@@ -23,6 +26,21 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			ArrayList<Category> categories = CategoryManager.getAllCategory();
+			
+			for (Category category : categories) {
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
+	
+	
 
 }
