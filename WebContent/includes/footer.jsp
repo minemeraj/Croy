@@ -23,6 +23,9 @@
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
+	<!-- Bootstrap File Input JavaScript -->
+	<script src="js/fileinput.min.js" type="text/javascript"></script>
+
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     
@@ -32,6 +35,16 @@
     <!-- Bootstrap Validator JavaScript -->
     <script src="js/validator.min.js"></script>
 
+	<script>
+		$("#input-20").fileinput({
+			browseClass : "btn btn-primary btn-block",
+			showCaption : false,
+			showRemove : false,
+			showUpload : false
+		});
+	</script>
+
+	
 </body>
 
 </html>

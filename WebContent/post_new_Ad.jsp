@@ -10,126 +10,70 @@
 		<div class="panel-heading">Post Your Ad</div>
 		<div class="panel-body">
 
-			<div class="col-lg-6">
-				<form method="post" role="form" autocomplete="on"
-					data-toggle="validator">
+			<div class=".col-md-6 .col-md-offset-3">
+				<form action="PostAdServlet" method="post" role="form" autocomplete="on"
+					data-toggle="validator" enctype="multipart/form-data">
 					<fieldset>
 						<div class="form-group">
 							<label>Select Your Ad Category</label> <select
-								name="sub_category" class="selectpicker form-control"
+								name="sub_category_id" class="selectpicker form-control"
 								data-live-search="true" required
 								data-error="Must select your Ad Category" id="inputSubCategory">
 								<option disabled selected value="">--Please Select
 									Area--</option>
 								<%
 									ArrayList<Category> categories = CategoryManager.getAllCategory();
-									for (Category category : categories) {
-										out.print("<optgroup label=\"");
-										out.print(category.getCategory());
-										out.print("\">");
-										ArrayList<SubCategory> subCategories = SubCategoryManager
-												.getSubCategoryByCategoryId(category.getCategory_Id());
-										for (SubCategory subCategory : subCategories) {
-											out.print("<option ");
-											out.print(" value=\"");
-											out.print(subCategory.getSub_Category_id());
+										for (Category category : categories) {
+											out.print("<optgroup label=\"");
+											out.print(category.getCategory());
 											out.print("\">");
-											out.print(subCategory.getSub_Category());
-											out.print("</option>");
+											ArrayList<SubCategory> subCategories = SubCategoryManager
+													.getSubCategoryByCategoryId(category.getCategory_Id());
+											for (SubCategory subCategory : subCategories) {
+												out.print("<option ");
+												out.print(" value=\"");
+												out.print(subCategory.getSub_Category_id());
+												out.print("\">");
+												out.print(subCategory.getSub_Category());
+												out.print("</option>");
+											}
+											out.print("</optgroup>");
 										}
-										out.print("</optgroup>");
-									}
 								%>
 
 							</select>
 						</div>
 						<div class="form-group">
 							<label>Ad Title</label> <input class="form-control"
-								placeholder="Ad Title" name="password" type="text" required
-								maxlength="14" id="inputPassword"
-								data-error="This fiels is required!">
-							<div class="help-block with-errors">The ad title cannot
-								more than 14 character long!</div>
+								placeholder="Ad Title" name="title" type="text" required
+								id="inputPassword" data-error="This fiels is required!">
+							<div class="help-block with-errors"></div>
 						</div>
 
 						<div class="form-group">
-							<label>Ad Title</label> <input class="form-control" name="title"
-								required data-error="This fiels is required!">
-							<div class="help-block"></div>
-						</div>
-						<div class="form-group">
-							<label>Text Input with Placeholder</label> <input
-								class="form-control" placeholder="Enter text">
-						</div>
-						<div class="form-group">
-							<label>Static Control</label>
-							<p class="form-control-static">email@example.com</p>
-						</div>
-						<div class="form-group">
-							<label>File input</label> <input type="file">
-						</div>
-						<div class="form-group">
-							<label>Text area</label>
-							<textarea class="form-control" rows="3"
-								style="margin: 0px -6px 0px 0px; height: 96px; width: 453px;"></textarea>
-						</div>
-						<div class="form-group">
-							<label>Checkboxes</label>
-							<div class="checkbox">
-								<label> <input type="checkbox" value="">Checkbox
-									1
-								</label>
-							</div>
-							<div class="checkbox">
-								<label> <input type="checkbox" value="">Checkbox
-									2
-								</label>
-							</div>
-							<div class="checkbox">
-								<label> <input type="checkbox" value="">Checkbox
-									3
-								</label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label>Inline Checkboxes</label> <label class="checkbox-inline">
-								<input type="checkbox">1
-							</label> <label class="checkbox-inline"> <input type="checkbox">2
-							</label> <label class="checkbox-inline"> <input type="checkbox">3
-							</label>
-						</div>
-						<div class="form-group">
-							<label>Radio Buttons</label>
-							<div class="radio">
-								<label> <input type="radio" name="optionsRadios"
-									id="optionsRadios1" value="option1" checked="">Radio 1
-								</label>
-							</div>
-							<div class="radio">
-								<label> <input type="radio" name="optionsRadios"
-									id="optionsRadios2" value="option2">Radio 2
-								</label>
-							</div>
-							<div class="radio">
-								<label> <input type="radio" name="optionsRadios"
-									id="optionsRadios3" value="option3">Radio 3
-								</label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label>Inline Radio Buttons</label> <label class="radio-inline">
-								<input type="radio" name="optionsRadiosInline"
-								id="optionsRadiosInline1" value="option1" checked="">1
-							</label> <label class="radio-inline"> <input type="radio"
-								name="optionsRadiosInline" id="optionsRadiosInline2"
-								value="option2">2
-							</label> <label class="radio-inline"> <input type="radio"
-								name="optionsRadiosInline" id="optionsRadiosInline3"
-								value="option3">3
-							</label>
+							<label>Price</label> <input class="form-control"
+								placeholder="Price" name="price" type="text" pattern="\d+(\.\d{2})?" required
+								id="inputPassword" data-error="This fiels is required and enter valid price!">
+							<div class="help-block with-errors"></div>
 						</div>
 
-						<button type="submit" class="btn btn-success pull-right">Post</button>
+						<div class="form-group">
+							<label>Upload Images</label> <input id="input-20" name="file"
+								type="file" multiple=true accept="image/*" required>
+							<div class="help-block with-errors">Please all pictures at a time.</div>
+						</div>
+
+						<div class="form-group">
+							<label>Ad Description</label>
+							<textarea class="form-control" rows="3" required
+								name="description"></textarea>
+							<div class="help-block with-errors">Description must be
+								written.</div>
+						</div>
+
+						<input type="submit" class="btn btn-success pull-right"
+							value="Post">
+
 					</fieldset>
 				</form>
 			</div>
@@ -142,7 +86,6 @@
 	</div>
 	<!-- /.panel -->
 </div>
-
 
 
 <jsp:include page="includes/footer.jsp"></jsp:include>

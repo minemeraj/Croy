@@ -15,14 +15,19 @@
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
+<!-- Bootstrap File Input CSS -->
+<link href="css/fileinput.min.css" rel="stylesheet" type="text/css" />
+
 <!-- Bootstrap-Select CSS -->
 <link href="css/bootstrap-select.min.css" rel="stylesheet">
+
 <!-- Custom CSS -->
 <link href="css/shop-homepage.css" rel="stylesheet">
 <link href="css/shop-item.css" rel="stylesheet">
 
 <!-- Font-Awesome CSS -->
 <link href="css/font-awesome.min.css" rel="stylesheet">
+
 
 
 
