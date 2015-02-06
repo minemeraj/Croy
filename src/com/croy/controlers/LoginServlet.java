@@ -55,6 +55,7 @@ public class LoginServlet extends HttpServlet {
 			HttpSession httpSession = request.getSession();
 			try {
 				User user = UserManager.getUserByEmail(email);
+				httpSession.setAttribute("user_id", user.getUser_id());
 				httpSession.setAttribute("email", user.getEmail());
 				httpSession.setAttribute("name", user.getName());
 				httpSession.setAttribute("mobile", user.getMobile());

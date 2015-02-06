@@ -1,93 +1,107 @@
+<%@page import="com.croy.tables.ImageManager"%>
+<%@page import="com.croy.tables.UserManager"%>
+<%@page import="com.croy.beans.User"%>
+<%@page import="java.sql.Date"%>
+<%@page import="com.croy.tables.AdManager"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.croy.beans.Ad"%>
 <jsp:include page="includes/header.jsp"></jsp:include>
 
-            <div class="col-md-3">
-                <p class="lead">Shop Name</p>
-                <div class="list-group">
-                    <a href="#" class="list-group-item">Posted By</a>
-                    <a href="#" class="list-group-item">Dhaka</a>
-                    <a href="#" class="list-group-item">BD</a>
-                </div>
-            </div>
 
-            <div class="col-md-9">
+<%
+	if (request.getParameter("ad_id") == null) {
+		RequestDispatcher dispatcher = request
+				.getRequestDispatcher("index.jsp");
+		dispatcher.forward(request, response);
+	}
 
-                <div class="thumbnail">
-                    <img class="img-responsive" src="http://placehold.it/800x300" alt="">
-                    <div class="caption-full">
-                        <h4 class="pull-right">$24.99</h4>
-                        <h4><a href="#">Product Name</a>
-                        </h4>
-                        <p>See more snippets like these online store reviews at <a target="_blank" href="http://bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-                        <p>Want to make these reviews work? Check out
-                            <strong><a href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this building a review system tutorial</a>
-                            </strong>over at maxoffsky.com!</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-                    </div>
-                    <div class="ratings">
-                        <p class="pull-right">3 reviews</p>
-                        <p>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            4.0 stars
-                        </p>
-                    </div>
-                </div>
+	int ad_id;
+	Ad ad;
+	User user;
+	ArrayList<String> imageUrls;
+	ad_id = Integer.parseInt(request.getParameter("ad_id"));
+	ad = AdManager.getAdById(ad_id);
+	user = UserManager.get_User_by_id(ad.getUser_id());
+	imageUrls = ImageManager.getImageUrlsByAdId(ad_id);
+%>
 
-                <div class="well">
 
-                    <div class="text-right">
-                        <a class="btn btn-success">Leave a Review</a>
-                    </div>
+<div class="col-md-3">
+	<p class="lead">Posted By</p>
+	<h3><%=user.getName()%></h3>
 
-                    <hr>
+	<ul class="list-group">
+		<li class="list-group-item"><%=user.getEmail()%></li>
+		<li class="list-group-item"><%=user.getMobile()%></li>
+	</ul>
+</div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            Anonymous
-                            <span class="pull-right">10 days ago</span>
-                            <p>This product was great in terms of quality. I would definitely buy another!</p>
-                        </div>
-                    </div>
+<div class="col-md-9">
 
-                    <hr>
+	<div class="thumbnail">
+		<div id="carousel-example-generic" class="carousel slide"
+			data-ride="carousel">
+			<ol class="carousel-indicators">
+				<%
+					for (int i = 1; i <= imageUrls.size(); i++) {
+				%>
+				<li class=<%if (i == 1) {
+					out.print("active");
+				}%>
+					data-target="#carousel-example-generic" data-slide-to="<%=i%>"></li>
+				<%
+					}
+				%>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            Anonymous
-                            <span class="pull-right">12 days ago</span>
-                            <p>I've alredy ordered another one!</p>
-                        </div>
-                    </div>
+			</ol>
+			<div class="carousel-inner">
+				<%
+					for (int i = 0; i < imageUrls.size(); i++) {
+				%>
 
-                    <hr>
+				<div class="item<%if (i == 0) {
+					out.print(" active");
+				}%>">
+					<img class="slide-image" src="<%=imageUrls.get(i)%>" alt="">
+				</div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            Anonymous
-                            <span class="pull-right">15 days ago</span>
-                            <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
-                        </div>
-                    </div>
+				<%
+					}
+				%>
 
-                </div>
+			</div>
+			<a class="left carousel-control" href="#carousel-example-generic"
+				data-slide="prev"> <span
+				class="glyphicon glyphicon-chevron-left"></span>
+			</a> <a class="right carousel-control" href="#carousel-example-generic"
+				data-slide="next"> <span
+				class="glyphicon glyphicon-chevron-right"></span>
+			</a>
+		</div>
+		<div class="caption-full">
+			<h1 class="pull-right">
+				<span class="label label-info">Tk <%=ad.getPrice()%></span>
+			</h1>
+			<h1>
+				<%=ad.getTitle()%>
+			</h1>
+			
+			<h5>
+				Posted On: <%=ad.getPost_date()%>
+			</h5>
 
-            </div>
+			<div class="well">
+
+				<p>
+					<%=ad.getDescription()%>
+				</p>
+
+			</div>
+		</div>
+
+	</div>
+
+
+
+</div>
 <jsp:include page="includes/footer.jsp"></jsp:include>

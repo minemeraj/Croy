@@ -2,13 +2,16 @@ package com.croy.controlers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -17,6 +20,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 
 import com.croy.beans.Ad;
+import com.croy.beans.Image;
+import com.croy.tables.AdManager;
+import com.croy.tables.CategoryManager;
+import com.croy.tables.ImageManager;
 
 /**
  * Servlet implementation class PostAdServlet
@@ -48,17 +55,6 @@ public class PostAdServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
-		try {
-			process(request);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private void process(HttpServletRequest request) throws Exception {
 
 		try {
 
@@ -66,28 +62,26 @@ public class PostAdServlet extends HttpServlet {
 					new DiskFileItemFactory()).parseRequest(request);
 
 			Ad ad = new Ad();
+			ArrayList<String> images = new ArrayList<String>();
 
 			for (FileItem item : items) {
 
 				if (item.isFormField()) {
 
 					if (item.getFieldName().equals("sub_category_id")) {
-						ad.setSub_category_id(Integer.parseInt(item.getString()));
-//						ad.setCategory_id();
-					}
-
-
-
-					if (item.getFieldName().equals("title")) {
+						int sub_category_id = Integer
+								.parseInt(item.getString());
+						ad.setSub_category_id(sub_category_id);
+						ad.setCategory_id(CategoryManager
+								.getCategory_Id_By_Sub_Category_Id(sub_category_id));
+					} else if (item.getFieldName().equals("title")) {
 						ad.setTitle(item.getString());
-					}
-
-					if (item.getFieldName().equals("price")) {
+					} else if (item.getFieldName().equals("price")) {
 						ad.setPrice(item.getString());
-					}
-
-					if (item.getFieldName().equals("description")) {
+					} else if (item.getFieldName().equals("description")) {
 						ad.setDescription(item.getString());
+					} else {
+						System.out.println("What the hell!");
 					}
 
 					System.out.println(item.getFieldName() + " "
@@ -97,13 +91,19 @@ public class PostAdServlet extends HttpServlet {
 
 					String fileName = FilenameUtils.getName(item.getName());
 
+					if (FilenameUtils.getBaseName(fileName).length() < 3) {
+						fileName = "abcd".concat(fileName);
+					}
+
 					System.out.println("Filename -> " + fileName);
 
 					String realPath = getServletContext().getRealPath("/");
 
-					File file = new File(realPath + "/uploadFolder");
+					File file = new File(realPath + "/images");
 
-					file.mkdir();
+					if (!file.exists()) {
+						file.mkdir();
+					}
 
 					String prefix = FilenameUtils.getBaseName(fileName) + "_";
 
@@ -116,31 +116,46 @@ public class PostAdServlet extends HttpServlet {
 
 					System.out.println("tempFile -> " + tempFile);
 
-					item.write(tempFile); // File uploaded to "uploadFolder" in
-											// Web Server(Not database)
+					images.add("images/"
+							+ FilenameUtils.getBaseName(tempFile.toString())
+							+ suffix);
 
-					// Save the File path(String) to Database now.
+					item.write(tempFile);
 
 				}
 			}
+
+			HttpSession httpSession = request.getSession();
+
+			ad.setUser_id((int) httpSession.getAttribute("user_id"));
+
+			ad.setAdd_id(AdManager.insertAndGetTheId(ad));
+
+			Image image = new Image();
+
+			image.setAd_id(ad.getAdd_id());
+
+			for (String url : images) {
+
+				image.setUrl(url);
+
+				ImageManager.insert(image);
+			}
+
+			response.sendRedirect("item.jsp?ad_id=" + ad.getAdd_id());
 
 		} catch (FileUploadException e) {
 
 			e.printStackTrace();
 
-			throw new Exception(e);
-
 		} catch (IOException e) {
 
 			e.printStackTrace();
-
-			throw new Exception(e);
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
-			throw new Exception(e);
 		}
 
 	}

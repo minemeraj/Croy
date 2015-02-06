@@ -1,6 +1,7 @@
 package com.croy.beans;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class Ad implements Serializable {
 	/**
@@ -14,7 +15,7 @@ public class Ad implements Serializable {
 	private String title;
 	private String price;
 	private String description;
-	private String post_date;
+	private Date post_date;
 
 	public int getAdd_id() {
 		return add_id;
@@ -72,11 +73,11 @@ public class Ad implements Serializable {
 		this.description = description;
 	}
 
-	public String getPost_date() {
+	public Date getPost_date() {
 		return post_date;
 	}
 
-	public void setPost_date(String post_date) {
+	public void setPost_date(Date post_date) {
 		this.post_date = post_date;
 	}
 
